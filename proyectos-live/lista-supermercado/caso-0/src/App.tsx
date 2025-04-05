@@ -12,19 +12,28 @@ function App() {
     api.list().then(setItems);
   }, []);
 
+  const handleDelete = (id: number) => {
+    setItems(items ? items.filter((item) => item.id !== id) : items);
+  };
+
   return (
     <main className={styles.main}>
       <h1>Supermarket list</h1>
       <form>
-        <input name="text" type="text" />
+        <input name="text" type="text" autoFocus/>
         <button>Add</button>
       </form>
       <ul>
-        {items.map((item) => (
-          <li className={item.completed ? styles.completed : ""}>
-            {item.text} <button>[X]</button>
-          </li>
-        ))}
+        {items ? (
+          items.map((item) => (
+            <li key={item.id} className={item.completed ? styles.completed : ""}>
+              {item.text}
+              <button onClick={() => handleDelete(item.id)}>[X]</button>
+            </li>
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
       </ul>
     </main>
   );
